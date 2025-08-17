@@ -23,7 +23,7 @@ self.MonacoEnvironment = {
 };
 const editor = monaco.editor.create(document.getElementById("editor"), {
   value: localStorage.getItem("value") || "",
-  language: "html",
+  language: "csharp",
   theme: "vs-dark",
   fontSize: 15,
   automaticLayout: true,
