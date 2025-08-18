@@ -3,10 +3,13 @@ import dotenv from "dotenv";
 import { GameManager } from "./lib/game-manager.js";
 import { IMAGES_DIR, getTasks, checkTask } from "./lib/tasks.js";
 import { adminAuth } from "./lib/password.js";
+import { CodeChecker } from "./lib/code-checker.js";
+import { zip } from "./lib/solution-zip.js";
 
 dotenv.config({ path: "../.env" });
 
 const game = new GameManager();
+const checker = new CodeChecker(process.env.CODE_CHECKER_TOKEN);
 const app = express();
 const PORT = process.env.SERVER_PORT || 4747;
 
@@ -52,6 +55,21 @@ apiRouter.get("/tasks", async (req, res) => {
 
 apiRouter.get("/state", (req, res) => {
   res.json(game.getState());
+});
+
+apiRouter.post("/run", async (req, res) => {
+  const { player, code } = req.body;
+  if ((player !== 1 && player !== 2) || typeof code !== "string") {
+    return res.status(400).send("Invalid code data");
+  }
+  const solutionZip = await zip(code);
+  var requestId = checker.run(solutionZip);
+  res.json({ requestId });
+});
+
+apiRouter.get("/runResult", async (req, res) => {
+  const checkResult = await checker.getResult(req.query.requestId);
+  res.json(checkResult);
 });
 
 app.use((req, res) => res.status(404).send("Not found"));

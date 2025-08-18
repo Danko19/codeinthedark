@@ -7,6 +7,7 @@ import HtmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
 const params = new URLSearchParams(location.search);
 const timerEl = document.getElementById("timer");
 const refImg = document.getElementById("ref");
+const runButton = document.getElementById("runCode");
 
 let PLAYER =
   Number(params.get("player")) || Number(localStorage.getItem("player"));
@@ -64,3 +65,40 @@ async function poll() {
 
 poll();
 setInterval(poll, 500);
+
+runButton.onclick = async function () {
+  runButton.disabled = true;
+  runButton.textContent = "↻ Waiting"
+  const code = editor.getValue();
+  const response = await fetch("/api/run", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ player: PLAYER, code }),
+  }).then(response => response.json());
+  waitReult(response.requestId);
+};
+
+function waitReult(requestId) {
+  var tryCount = 0;
+  const pollingId = setInterval(async () => {
+    try {
+      tryCount++;
+      const response = await fetch("/api/runResult?requestId=" + requestId);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+
+      if (data.status !== 'processing' || tryCount >= 60) {
+        clearInterval(pollingId);
+        alert(JSON.stringify(data));
+        runButton.disabled = false;
+        runButton.textContent = "► Run";
+      }
+    }
+    catch (error) {
+      console.error('Error during polling:', error);
+      clearInterval(pollingId); // Stop polling on error
+    }
+  }, 1000)
+}
