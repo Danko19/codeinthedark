@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import { GameManager } from "./lib/game-manager.js";
-import { IMAGES_DIR, getTasks, checkTask } from "./lib/tasks.js";
+import { TASKS_DIR, getTasks, checkTask, getFileContents } from "./lib/tasks.js";
 import { adminAuth } from "./lib/password.js";
 import { CodeChecker } from "./lib/code-checker.js";
 import { zip } from "./lib/solution-zip.js";
@@ -15,7 +15,7 @@ const PORT = process.env.SERVER_PORT || 4747;
 
 const apiRouter = express.Router();
 
-app.use("/tasks", express.static(IMAGES_DIR));
+app.use("/tasks", express.static(TASKS_DIR));
 
 if (process.env.NODE_ENV !== "development") {
   app.use("/", express.static("../client/dist"));
@@ -48,7 +48,7 @@ apiRouter.get("/tasks", async (req, res) => {
   res.json(
     tasks.map((x) => ({
       name: x,
-      url: `http://localhost:${PORT}/tasks/${x}`,
+      url: `http://localhost:${PORT}/tasks/${x}/task.png`    
     })),
   );
 });
