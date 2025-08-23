@@ -30,15 +30,23 @@ apiRouter.post("/start", adminAuth, async (req, res) => {
   if (!(await checkTask(taskId)) || !Number(duration)) {
     return res.status(400).send("Bad task or duration");
   }
-  game.start(taskId, Number(duration));
+
+  const defaultCodeTemplate = await getFileContents(taskId, "template", "utf-8");
+  game.start(taskId, Number(duration), defaultCodeTemplate);
   res.json({ taskId, duration: Number(duration) });
 });
 
+
 apiRouter.post("/code", async (req, res) => {
   const { player, code } = req.body;
-  if ((player !== 1 && player !== 2) || typeof code !== "string") {
+  if (player !== 1 && player !== 2) {
+    return res.status(400).send("Unknown player");
+  }
+
+    if (typeof code !== "string") {
     return res.status(400).send("Invalid code data");
   }
+
   game.submitCode(player, code);
   res.send("OK");
 });
@@ -59,10 +67,14 @@ apiRouter.get("/state", (req, res) => {
 
 apiRouter.post("/run", async (req, res) => {
   const { player, code } = req.body;
-  if ((player !== 1 && player !== 2) || typeof code !== "string") {
+  if (player !== 1 && player !== 2) {
+    return res.status(400).send("Unknown player");
+  }
+  if (typeof code !== "string") {
     return res.status(400).send("Invalid code data");
   }
-  const solutionZip = await zip(code);
+
+  const solutionZip = await zip(code, game.getState().taskId);
   var requestId = checker.run(solutionZip);
   res.json({ requestId });
 });

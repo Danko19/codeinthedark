@@ -8,9 +8,13 @@ export class GameManager {
     this.codes = { 1: "", 2: "" };
   }
 
-  start(taskId, duration) {
+  start(taskId, duration, defaultCodeTemplate) {
     this.current = { taskId, duration, startAt: Date.now() };
-    this.codes = { 1: "", 2: "" };
+    this.codes = { 1: defaultCodeTemplate, 2: defaultCodeTemplate };
+  }
+
+  stop() {
+    this.reset();
   }
 
   submitCode(player, code) {
