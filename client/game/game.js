@@ -22,8 +22,9 @@ self.MonacoEnvironment = {
     return new HtmlWorker();
   },
 };
+
 const editor = monaco.editor.create(document.getElementById("editor"), {
-  value: localStorage.getItem("value") || "",
+  value: localStorage.getItem("value"),
   language: "csharp",
   theme: "vs-dark",
   fontSize: 15,
@@ -48,6 +49,7 @@ let currentTaskId = null;
 async function poll() {
   try {
     const state = await fetch("/api/state").then((r) => r.json());
+    runButton.hidden = !state.taskId;
     timerEl.textContent = state.taskId
       ? `${formatTime(state.timeLeft)}`
       : "Waiting for the start…";
@@ -57,6 +59,7 @@ async function poll() {
       const tasks = await fetch("/api/tasks").then((r) => r.json());
       const t = tasks.find((x) => x.name === state.taskId);
       refImg.src = t ? t.url : "";
+      editor.setValue(state.codes[PLAYER] || "");
     }
   } catch (e) {
     console.error(e);
