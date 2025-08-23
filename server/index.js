@@ -36,6 +36,10 @@ apiRouter.post("/start", adminAuth, async (req, res) => {
   res.json({ taskId, duration: Number(duration) });
 });
 
+apiRouter.post("/stop", adminAuth, async (req, res) => {
+  game.stop();
+  res.json({ status: "ok" });
+});
 
 apiRouter.post("/code", async (req, res) => {
   const { player, code } = req.body;
