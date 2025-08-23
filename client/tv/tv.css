@@ -19,6 +19,10 @@ body {
   margin-bottom: 20px;
 }
 
+.original-сolumn {
+  overflow: hidden;
+}
+
 .original-title {
   font-size: 32px;
   margin-bottom: 20px;
@@ -45,6 +49,7 @@ body {
   background: white;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
   height: 70vh;
+  object-fit: contain;
 }
 
 .player-frame {

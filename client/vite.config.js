@@ -5,7 +5,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   root: ".",
-  baseUr: ".",
+  base: ".",
   build: {
     outDir: "dist",
     rollupOptions: {
@@ -24,6 +24,6 @@ export default defineConfig({
       "/api": {
         target: `http://localhost:${process.env.SERVER_PORT || 4747}`,
       },
-    },
+    }
   },
 });
