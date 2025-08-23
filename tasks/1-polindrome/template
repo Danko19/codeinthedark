@@ -1,0 +1,11 @@
+using System.Text;
+
+namespace namespace IsPalindrome;
+
+public static class Solution
+{
+    public static bool Solve(string input)
+    {
+        // ваше решение
+    }
+}
