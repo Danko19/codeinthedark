@@ -85,6 +85,7 @@ apiRouter.post("/run", async (req, res) => {
 
 apiRouter.get("/runResult", async (req, res) => {
   const checkResult = await checker.getResult(req.query.requestId);
+  game.setCodeCheckerResult(req.query.playerId, checkResult);
   res.json(checkResult);
 });
 
