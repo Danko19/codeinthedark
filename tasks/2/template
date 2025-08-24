@@ -1,10 +1,10 @@
 using System.Text;
 
-namespace namespace IsPalindrome;
+namespace namespace Sample;
 
 public static class Solution
 {
-    public static bool Solve(string input)
+    public static string Reverse(string input)
     {
         // ваше решение
     }
