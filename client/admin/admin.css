@@ -10,7 +10,7 @@ body {
   padding-left: 16px;
 }
 
-.button {
+.button, .stop-button {
   width: 100%;
   border: 0;
   background: #222;
@@ -28,6 +28,10 @@ body {
 
 .button:active {
   background: #494949;
+}
+
+.stop-button {
+  background: #dad6d6;
 }
 
 .section-title {

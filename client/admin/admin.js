@@ -78,6 +78,33 @@ document.getElementById("startForm").addEventListener("submit", (e) => {
     .catch((err) => alert(err.message));
 });
 
+document.querySelector(".stop-button").addEventListener("click", (e) => {
+  e.preventDefault();
+  fetch("/api/stop", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-admin-password": getAdminPassword(),
+    },
+  })
+    .then((r) => {
+      if (r.status === 401) {
+        throw new Error(
+          "Wrong password. Please refresh the page and try again.",
+        );
+      }
+      return r.json();
+    })
+    .then((d) => {
+      document.getElementById("time-left").innerText = ``;
+      document.getElementById("status").innerText = ``;
+      document.getElementById("one").value = ``;
+      document.getElementById("two").value = ``;
+      alert("Round stopped");
+    })
+    .catch((err) => alert(err.message));
+});
+
 function submitCode(player, code) {
   fetch("/api/code", {
     method: "POST",

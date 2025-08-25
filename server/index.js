@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import { GameManager } from "./lib/game-manager.js";
-import { IMAGES_DIR, getTasks, checkTask } from "./lib/tasks.js";
+import { TASKS_DIR, getTasks, checkTask, getFileContents } from "./lib/tasks.js";
 import { adminAuth } from "./lib/password.js";
 import { CodeChecker } from "./lib/code-checker.js";
 import { zip } from "./lib/solution-zip.js";
@@ -15,7 +15,7 @@ const PORT = process.env.SERVER_PORT || 4747;
 
 const apiRouter = express.Router();
 
-app.use("/tasks", express.static(IMAGES_DIR));
+app.use("/tasks", express.static(TASKS_DIR));
 
 if (process.env.NODE_ENV !== "development") {
   app.use("/", express.static("../client/dist"));
@@ -30,15 +30,27 @@ apiRouter.post("/start", adminAuth, async (req, res) => {
   if (!(await checkTask(taskId)) || !Number(duration)) {
     return res.status(400).send("Bad task or duration");
   }
-  game.start(taskId, Number(duration));
+
+  const defaultCodeTemplate = await getFileContents(taskId, "template", "utf-8");
+  game.start(taskId, Number(duration), defaultCodeTemplate);
   res.json({ taskId, duration: Number(duration) });
+});
+
+apiRouter.post("/stop", adminAuth, async (req, res) => {
+  game.stop();
+  res.json({ status: "ok" });
 });
 
 apiRouter.post("/code", async (req, res) => {
   const { player, code } = req.body;
-  if ((player !== 1 && player !== 2) || typeof code !== "string") {
+  if (player !== 1 && player !== 2) {
+    return res.status(400).send("Unknown player");
+  }
+
+    if (typeof code !== "string") {
     return res.status(400).send("Invalid code data");
   }
+
   game.submitCode(player, code);
   res.send("OK");
 });
@@ -48,7 +60,7 @@ apiRouter.get("/tasks", async (req, res) => {
   res.json(
     tasks.map((x) => ({
       name: x,
-      url: `http://localhost:${PORT}/tasks/${x}`,
+      url: `http://localhost:${PORT}/tasks/${x}/task.png`    
     })),
   );
 });
@@ -59,16 +71,21 @@ apiRouter.get("/state", (req, res) => {
 
 apiRouter.post("/run", async (req, res) => {
   const { player, code } = req.body;
-  if ((player !== 1 && player !== 2) || typeof code !== "string") {
+  if (player !== 1 && player !== 2) {
+    return res.status(400).send("Unknown player");
+  }
+  if (typeof code !== "string") {
     return res.status(400).send("Invalid code data");
   }
-  const solutionZip = await zip(code);
+
+  const solutionZip = await zip(code, game.getState().taskId);
   var requestId = checker.run(solutionZip);
   res.json({ requestId });
 });
 
 apiRouter.get("/runResult", async (req, res) => {
   const checkResult = await checker.getResult(req.query.requestId);
+  game.setCodeCheckerResult(req.query.playerId, checkResult);
   res.json(checkResult);
 });
 

@@ -22,8 +22,9 @@ self.MonacoEnvironment = {
     return new HtmlWorker();
   },
 };
+
 const editor = monaco.editor.create(document.getElementById("editor"), {
-  value: localStorage.getItem("value") || "",
+  // value: localStorage.getItem("value"),
   language: "csharp",
   theme: "vs-dark",
   fontSize: 15,
@@ -35,7 +36,7 @@ emmetHTML(monaco);
 
 editor.onDidChangeModelContent(() => {
   const code = editor.getValue();
-  localStorage.setItem("value", code);
+  //localStorage.setItem("value", code);
   fetch("/api/code", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -48,15 +49,24 @@ let currentTaskId = null;
 async function poll() {
   try {
     const state = await fetch("/api/state").then((r) => r.json());
+    if (!state.taskId)
+      runButton.hidden = true;
+
     timerEl.textContent = state.taskId
       ? `${formatTime(state.timeLeft)}`
       : "Waiting for the start…";
+
+   // if (state.codeCheckerResults[PLAYER] !== '') {}
 
     if (state.taskId !== currentTaskId) {
       currentTaskId = state.taskId;
       const tasks = await fetch("/api/tasks").then((r) => r.json());
       const t = tasks.find((x) => x.name === state.taskId);
       refImg.src = t ? t.url : "";
+      editor.setValue(state.codes[PLAYER] || "");
+      runButton.textContent = "► Run"
+      runButton.hidden = false;
+      runButton.disabled = false;
     }
   } catch (e) {
     console.error(e);
@@ -83,7 +93,7 @@ function waitReult(requestId) {
   const pollingId = setInterval(async () => {
     try {
       tryCount++;
-      const response = await fetch("/api/runResult?requestId=" + requestId);
+      const response = await fetch(`/api/runResult?requestId=${requestId}&playerId=${PLAYER}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -92,8 +102,7 @@ function waitReult(requestId) {
       if (data.status !== 'processing' || tryCount >= 60) {
         clearInterval(pollingId);
         alert(JSON.stringify(data));
-        runButton.disabled = false;
-        runButton.textContent = "► Run";
+        runButton.hidden = true;
       }
     }
     catch (error) {

@@ -1,0 +1,11 @@
+using System.Text;
+
+namespace namespace Sample;
+
+public static class Solution
+{
+    public static string Reverse(string input)
+    {
+        // ваше решение
+    }
+}

@@ -13,7 +13,7 @@ export class CodeChecker {
         var solution = {
             zip: zip,
             launchInfo: {
-                solutionName: 'HelloWorld',
+                solutionName: 'CodeInTheDark',
                 dockerImageName: 'ulearn-dotnet-sandbox',
                 timeLimitSeconds: 100
             }
