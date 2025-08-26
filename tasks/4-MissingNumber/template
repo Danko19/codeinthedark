@@ -1,0 +1,13 @@
+using System.Text;
+
+namespace namespace IsPalindrome;
+
+// Пожалуйста, не меняй название класса
+public static class Solution
+{
+    // Пожалуйста, не меняй сигнатуру метода Solve
+    public static int Solve(int[] input)
+    {
+        // Место для решения
+    }
+}

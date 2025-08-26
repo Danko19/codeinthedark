@@ -1,4 +1,4 @@
-﻿using IsPalindrome;
+﻿using PascalCaseToCamelCase;
 
 var result = new Tests().Run();
 var verdict = result switch

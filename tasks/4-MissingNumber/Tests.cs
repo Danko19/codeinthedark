@@ -1,4 +1,4 @@
-namespace IsPalindrome;
+namespace FindMissingNumber;
 
 public sealed class Tests
 {
@@ -6,12 +6,11 @@ public sealed class Tests
     {
         var tests = new[]
         {
-            ("A man, a plan, a canal: Panama", true),
-            ("racecar", true),
-            ("hello world", false),
-            ("", true),
-            ("a", true),
-            ("No 'x' in Nixon", true)
+            (new[] {1, 3, 4, 5}, 2),
+            (new[] {1, 2, 3, 5}, 4),
+            (new[] {2, 3, 4, 5}, -1),
+            (new[] {1, 2, 3, 4}, -1),
+            (Array.Empty<int>(), -1)
         };
         for (var i = 0; i < tests.Length; i++)
         {
