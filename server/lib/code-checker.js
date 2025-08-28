@@ -14,7 +14,7 @@ export class CodeChecker {
             zip: zip,
             launchInfo: {
                 solutionName: 'CodeInTheDark',
-                dockerImageName: 'ulearn-dotnet-sandbox',
+                dockerImageName: 'ulearn-dotnet8-sandbox',
                 timeLimitSeconds: 100
             }
         };
