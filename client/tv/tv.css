@@ -46,8 +46,8 @@ body {
   object-fit: scale-down;
   object-position: 50% 0%;
   border-radius: 8px;
-  background: white;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
+  background: #1e1e1e;
+  box-shadow: 0 0 0 1px rgba(1e, 1e, 1e, 0.5);
   height: 70vh;
   object-fit: contain;
 }

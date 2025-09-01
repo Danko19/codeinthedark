@@ -56,8 +56,6 @@ async function poll() {
       ? `${formatTime(state.timeLeft)}`
       : "Waiting for the start…";
 
-   // if (state.codeCheckerResults[PLAYER] !== '') {}
-
     if (state.taskId !== currentTaskId) {
       currentTaskId = state.taskId;
       const tasks = await fetch("/api/tasks").then((r) => r.json());
@@ -65,8 +63,8 @@ async function poll() {
       refImg.src = t ? t.url : "";
       editor.setValue(state.codes[PLAYER] || "");
       runButton.textContent = "► Run"
-      runButton.hidden = false;
       runButton.disabled = false;
+      runButton.hidden = false;
     }
   } catch (e) {
     console.error(e);
@@ -102,7 +100,9 @@ function waitReult(requestId) {
       if (data.status !== 'processing' || tryCount >= 60) {
         clearInterval(pollingId);
         alert(JSON.stringify(data));
-        runButton.hidden = true;
+        runButton.textContent = "► Run"
+        runButton.disabled = false;
+        runButton.hidden = false;
       }
     }
     catch (error) {
