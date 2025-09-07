@@ -5,6 +5,7 @@ import { TASKS_DIR, getTasks, checkTask, getFileContents } from "./lib/tasks.js"
 import { adminAuth } from "./lib/password.js";
 import { CodeChecker } from "./lib/code-checker.js";
 import { zip } from "./lib/solution-zip.js";
+import { getLocalIP } from "./lib/localIp.js";
 
 dotenv.config({ path: "../.env" });
 
@@ -12,6 +13,7 @@ const game = new GameManager();
 const checker = new CodeChecker(process.env.CODE_CHECKER_TOKEN);
 const app = express();
 const PORT = process.env.SERVER_PORT || 4747;
+const LOCAL_IP = process.env.SERVER_IP || '127.0.0.1';
 
 const apiRouter = express.Router();
 
@@ -60,7 +62,7 @@ apiRouter.get("/tasks", async (req, res) => {
   res.json(
     tasks.map((x) => ({
       name: x,
-      url: `http://localhost:${PORT}/tasks/${x}/task.png`    
+      url: `http://${LOCAL_IP}:${PORT}/tasks/${x}/task.png`    
     })),
   );
 });
@@ -95,6 +97,6 @@ app.use((err, req, res, next) => {
   res.status(500).send("Internal Server Error");
 });
 
-app.listen(PORT, () => {
-  console.log(`\x1b[1mListening on http://localhost:${PORT}\x1b[0m`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`\x1b[1mListening on http://${LOCAL_IP}:${PORT}\x1b[0m`);
 });

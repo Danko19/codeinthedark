@@ -22,7 +22,7 @@ export default defineConfig({
     host: true,
     proxy: {
       "/api": {
-        target: `http://localhost:${process.env.SERVER_PORT || 4747}`,
+        target: `http://${process.env.SERVER_IP || '127.0.0.1'}:${process.env.SERVER_PORT || 4747}`,
       },
     }
   },
