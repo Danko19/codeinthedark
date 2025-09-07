@@ -1,12 +1,12 @@
 using System.Text;
 
-namespace FindMissingNumber;
+namespace Task4;
 
 // Пожалуйста, не меняй название класса
 public static class Solution
 {
     // Пожалуйста, не меняй сигнатуру метода Solve
-    public static int Solve(int[] input)
+    public static string Solve(string input)
     {
         // Место для решения
     }

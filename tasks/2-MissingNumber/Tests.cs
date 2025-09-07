@@ -1,10 +1,10 @@
-namespace FindMissingNumber;
+namespace Task2;
 
 public sealed class Tests
 {
     public Result Run()
     {
-        var tests = new[]
+        var publicTests = new[]
         {
             (new[] {1, 3, 4, 5}, 2),
             (new[] {1, 2, 3, 5}, 4),
@@ -12,6 +12,13 @@ public sealed class Tests
             (new[] {1, 2, 3, 4}, -1),
             (Array.Empty<int>(), -1)
         };
+        var privateTests = new[]
+        {
+            (new[] {333, 335}, 334)
+        };
+        var tests = publicTests.Concat(privateTests).ToArray();
+        var testInfos = new TestInfo[tests.Length];
+        var failed = false;
         for (var i = 0; i < tests.Length; i++)
         {
             var (input, expected) = tests[i];
@@ -20,7 +27,12 @@ public sealed class Tests
                 var actual = Solution.Solve(input);
                 if (actual != expected)
                 {
-                    return new WrongAnswerResult(i + 1);
+                    testInfos[i] = new TestInfo(false);
+                    failed = true;
+                }
+                else
+                {
+                    testInfos[i] = new TestInfo(true);
                 }
             }
             catch
@@ -29,7 +41,9 @@ public sealed class Tests
             }
         }
 
-        return new CorrectAnswerResult();
+        return failed
+        ? new WrongAnswerResult(testInfos)
+        : new CorrectAnswerResult();
     }
 }
 
@@ -40,14 +54,14 @@ public abstract class Result
 
 public sealed class WrongAnswerResult : Result
 {
-    public WrongAnswerResult(int firstFailedTest)
+    public WrongAnswerResult(TestInfo[] testInfos)
     {
-        FirstFailedTest = firstFailedTest;
+        TestInfos = testInfos;
     }
 
     public override TestResult TestResult => TestResult.WrongAnswer;
 
-    public int FirstFailedTest { get; }
+    public TestInfo[] TestInfos { get; }
 }
 
 public sealed class CorrectAnswerResult : Result
@@ -67,3 +81,5 @@ public enum TestResult
     RuntimeError = 1,
     TimeLimit = 2
 }
+
+public sealed record TestInfo(bool IsPassed);

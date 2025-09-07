@@ -1,4 +1,4 @@
-namespace Task3;
+namespace Task4;
 
 public sealed class Tests
 {
@@ -7,19 +7,31 @@ public sealed class Tests
         var publicTests = new[]
         {
             ("", ""),
-            ("A", "a"),
-            ("HelloWorld", "hello_world"),
-            ("UserId", "user_id"),
-            ("ApiV2Endpoint", "api_v2_endpoint"),
+            ("aaa", "a3"),
+            ("abc", "abc"),
+            ("abba", "ab2a"),
+            ("aabcccccaaa", "a2bc5a3"),
         };
         var privateTests = new[]
         {
-            ("Simple", "simple"),
-            ("NoChange", "no_change"),
-            ("XMLParser", "xml_parser"),
-            ("API", "api"),
-            ("MP4Video", "mp4_video"),
-            ("ABc", "a_bc")
+            ("a", "a"),
+            ("aa", "a2"),
+            ("aab", "a2b"),
+            ("aabb", "a2b2"),
+            ("aaab", "a3b"),
+            ("aaabb", "a3b2"),
+            ("aaabbb", "a3b3"),
+            ("hhhhhelllllooooo", "h5el5o5"),
+            ("AAABBBCCCD", "A3B3C3D"),
+            ("   ", " 3"),
+            ("!!!!!!!!!!!!", "!12"),
+            ("abbbbbbbbbbbb", "ab12"),
+            ("Mississippi", "Mis2is2ip2i"),
+            ("zzzzzzzzzzzzzzzzzzzz", "z20"),
+            ("abcabcabc", "abcabcabc"),
+            ("a", "a"),
+            ("aaaaaaaaaaaa", "a12"),
+            ("a b c d", "a b c d")
         };
         var tests = publicTests.Concat(privateTests).ToArray();
         var testInfos = new TestInfo[tests.Length];
