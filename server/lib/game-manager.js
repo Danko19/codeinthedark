@@ -3,6 +3,11 @@ export class GameManager {
     this.reset();
   }
 
+  countPassedElements = (data) => ({
+    total: data.length,
+    passed: data.filter(item => item.isPassed).length
+  });
+
   reset() {
     this.current = null;
     this.codes = { 1: "", 2: "" };
@@ -24,7 +29,17 @@ export class GameManager {
   }
 
   setCodeCheckerResult(player, result) {
-    this.codeCheckerResults[player] = result;
+    if (!result || !result.status || result.status === 'processing') {
+      this.codeCheckerResults[player] = "";
+      return;
+    }
+
+    this.codeCheckerResults[player] = {
+      status: result.status,
+      isSussesful: result.status === "testsPassed",
+      error: result.logs === null ? null : result.logs.map(str => str.replace(/\n/g, ' ')).join('\n'),
+      testsResult: result.tests === null ? null : this.countPassedElements(result.tests),
+    };
   }
 
   getState() {

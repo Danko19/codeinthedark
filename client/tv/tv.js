@@ -3,13 +3,32 @@ import * as monaco from "monaco-editor";
 import { emmetHTML } from "emmet-monaco-es";
 emmetHTML(monaco);
 
-const player1Result = document.getElementById("frame1");
-const player2Result = document.getElementById("frame2");
+function updatePlayerResult(result, element) {
+  if (result && result.isSussesful) {
+    element.textContent = `✔ Tests passed!`;
+    element.className = `player-result-success`;
+  } else if (result && result.status === 'testsFailed') {
+    element.textContent = `✘ Tests failed! Passed ${result.testsResult.passed} from ${result.testsResult.total}`;
+    element.className = `player-result-test-failed`;
+  } else if (result && result.status === 'sandboxError') {
+    element.textContent = `⚠ Runtime error`;
+    element.className = `player-result-error`;
+  } else {
+    element.className = `player-no-result`;
+    element.textContent = "";
+  }
+}
+
+const player1Code = document.getElementById("frame1");
+const player2Code = document.getElementById("frame2");
+
+const player1Result = document.getElementById("result-player-1");
+const player2Result = document.getElementById("result-player-2");
 
 let currentTaskId = null;
 let lastCodes = { 1: "", 2: "" };
 
-const editor1 = monaco.editor.create(player1Result, {
+const editor1 = monaco.editor.create(player1Code, {
   language: "csharp",
   theme: "vs-dark",
   fontSize: 15,
@@ -18,7 +37,7 @@ const editor1 = monaco.editor.create(player1Result, {
   "editor.scrollBeyondLastLine": false,
 });
 
-const editor2 = monaco.editor.create(player2Result, {
+const editor2 = monaco.editor.create(player2Code, {
   language: "csharp",
   theme: "vs-dark",
   fontSize: 15,
@@ -56,6 +75,10 @@ function poll() {
         lastCodes[2] = state.codes[2];
         editor2.setValue(lastCodes[2]);
       }
+
+      updatePlayerResult(state.codeCheckerResults[1], player1Result);
+      updatePlayerResult(state.codeCheckerResults[2], player2Result);
+
       document.getElementById("timer").innerText = formatTime(state.timeLeft);
     });
 }

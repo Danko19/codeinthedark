@@ -99,7 +99,9 @@ function waitReult(requestId) {
 
       if (data.status !== 'processing' || tryCount >= 60) {
         clearInterval(pollingId);
-        alert(JSON.stringify(data));
+        const state = await fetch("/api/state").then((r) => r.json());
+
+        alert(JSON.stringify(state.codeCheckerResults[PLAYER], null, 2));
         runButton.textContent = "► Run"
         runButton.disabled = false;
         runButton.hidden = false;

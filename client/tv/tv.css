@@ -17,6 +17,31 @@ body {
 .player-title {
   font-size: 32px;
   margin-bottom: 20px;
+  display: inline-block;
+}
+
+.player-no-result {
+  font-size: 32px;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.player-result-error {
+  font-size: 30px;
+  color: rgb(150, 8, 8); 
+  margin-bottom: 20px;
+}
+
+.player-result-success {
+  font-size: 30px;
+  color: rgb(7, 147, 87); 
+  margin-bottom: 20px;
+}
+
+.player-result-test-failed {
+  font-size: 30px;
+  color: rgb(147, 135, 7);
+  margin-bottom: 20px;
 }
 
 .original-сolumn {
@@ -25,7 +50,7 @@ body {
 
 .original-title {
   font-size: 32px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   text-align: center;
 }
 
@@ -66,4 +91,16 @@ body {
   transform: translateX(-50%);
   top: 24px;
   font-size: 64px;
+}
+
+.player-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* расстояние между блоками */
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* расстояние между h3 и h4 */
 }

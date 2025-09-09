@@ -10,15 +10,21 @@
   <body>
     <div class="main-grid">
       <div class="player-column">
-        <h3 class="player-title">Player 1</h3>
+        <div class="player">
+          <h3 class="player-title">Player 1</h3>
+          <h4 class="player-no-result" id="result-player-1"></h4>
+        </div>
         <div id="frame1" sandbox class="player-frame"></div>
       </div>
       <div class="original-column">
         <h3 class="original-title">Tests</h3>
-        <img id="refImg" class="reference-image"/>
+        <img id="refImg" class="reference-image" />
       </div>
       <div class="player-column">
-        <h3 class="player-title right-align">Player 2</h3>
+        <div class="player">
+          <h3 class="player-title right-align">Player 2</h3>
+          <h4 class="player-no-result" id="result-player-2"></h4>
+        </div>
         <div id="frame2" sandbox class="player-frame"></div>
       </div>
       <div id="timer" class="timer"></div>
