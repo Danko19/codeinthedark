@@ -11,7 +11,7 @@ function updatePlayerResult(result, element) {
     element.textContent = `✘ Tests failed! Passed ${result.testsResult.passed} from ${result.testsResult.total}`;
     element.className = `player-result-test-failed`;
   } else if (result && result.status === 'sandboxError') {
-    element.textContent = `⚠ Compilation or Runtime error`;
+    element.textContent = `⚠ Compilation/Runtime error`;
     element.className = `player-result-error`;
   } else {
     element.className = `player-no-result`;
@@ -35,6 +35,7 @@ const editor1 = monaco.editor.create(player1Code, {
   automaticLayout: true,
   readOnly: true,
   "editor.scrollBeyondLastLine": false,
+  minimap: { enabled: false }
 });
 
 const editor2 = monaco.editor.create(player2Code, {
@@ -44,6 +45,7 @@ const editor2 = monaco.editor.create(player2Code, {
   readOnly: true,
   automaticLayout: true,
   "editor.scrollBeyondLastLine": false,
+  minimap: { enabled: false }
 });
 
 function poll() {
