@@ -21,14 +21,23 @@ public sealed class Tests
             ("dddddd", null)
         };
 
-        var tests = publicTests.Concat(privateTests).ToArray();
+        var tests = publicTests.Concat(privateTests).ToArray();var testInfos = new TestInfo[tests.Length];
+        var failed = false;
         for (var i = 0; i < tests.Length; i++)
         {
             var (input, expected) = tests[i];
             try
             {
                 var actual = Solution.Solve(input);
-                if (actual != expected) return new WrongAnswerResult(i + 1);
+                if (actual != expected)
+                {
+                    testInfos[i] = new TestInfo(false);
+                    failed = true;
+                }
+                else
+                {
+                    testInfos[i] = new TestInfo(true);
+                }
             }
             catch
             {
@@ -36,7 +45,9 @@ public sealed class Tests
             }
         }
 
-        return new CorrectAnswerResult();
+        return failed
+            ? new WrongAnswerResult(testInfos)
+            : new CorrectAnswerResult();
     }
 }
 
@@ -47,14 +58,14 @@ public abstract class Result
 
 public sealed class WrongAnswerResult : Result
 {
-    public WrongAnswerResult(int firstFailedTest)
+    public WrongAnswerResult(TestInfo[] testInfos)
     {
-        FirstFailedTest = firstFailedTest;
+        TestInfos = testInfos;
     }
 
     public override TestResult TestResult => TestResult.WrongAnswer;
 
-    public int FirstFailedTest { get; }
+    public TestInfo[] TestInfos { get; }
 }
 
 public sealed class CorrectAnswerResult : Result
@@ -74,3 +85,5 @@ public enum TestResult
     RuntimeError = 1,
     TimeLimit = 2
 }
+
+public sealed record TestInfo(bool IsPassed);
