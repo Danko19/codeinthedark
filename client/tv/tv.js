@@ -11,7 +11,7 @@ function updatePlayerResult(result, element) {
     element.textContent = `✘ Tests failed! Passed ${result.testsResult.passed} from ${result.testsResult.total}`;
     element.className = `player-result-test-failed`;
   } else if (result && result.status === 'sandboxError') {
-    element.textContent = `⚠ Runtime error`;
+    element.textContent = `⚠ Compilation or Runtime error`;
     element.className = `player-result-error`;
   } else {
     element.className = `player-no-result`;
@@ -53,6 +53,7 @@ function poll() {
       const img = document.getElementById("refImg");
       if (!currentTaskId) {
         img.src = "preview.png";
+        img.style.objectFit = "fill";
       }
 
       if (state.taskId !== currentTaskId) {
@@ -62,6 +63,7 @@ function poll() {
           .then((tasks) => {
             const t = tasks.find((x) => x.name === state.taskId);
             img.src = t ? t.url : ``;
+            img.style.objectFit = "contain";
           });
         lastCodes = { 1: "", 2: "" };
         editor1.setValue("");

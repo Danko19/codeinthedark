@@ -68,21 +68,21 @@ body {
 .reference-image {
   width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  object-fit: scale-down;
-  object-position: 50% 0%;
   border-radius: 8px;
   background: #1e1e1e;
+  object-fit: scale-down;
+
+  object-position: 50% 0%;
   box-shadow: 0 0 0 1px rgba(1e, 1e, 1e, 0.5);
   height: 70vh;
   object-fit: contain;
 }
 
 .player-frame {
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  background: white;
   height: 70vh;
   width: 100%;
-  border: none;
 }
 
 .timer {
