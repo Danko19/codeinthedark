@@ -11,7 +11,8 @@ public sealed class Tests
             ("hello world", false),
             ("racecar", true),
             ("A man, a plan, a canal: Panama", true),
-            ("No 'x' in Nixon", true)
+            ("No 'x' in Nixon", true),
+            ("n8n", true)
         };
         var privateTests = new[]
         {

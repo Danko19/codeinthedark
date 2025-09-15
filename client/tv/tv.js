@@ -31,7 +31,7 @@ let lastCodes = { 1: "", 2: "" };
 const editor1 = monaco.editor.create(player1Code, {
   language: "csharp",
   theme: "vs-dark",
-  fontSize: 15,
+  fontSize: 10,
   automaticLayout: true,
   readOnly: true,
   "editor.scrollBeyondLastLine": false,
@@ -41,7 +41,7 @@ const editor1 = monaco.editor.create(player1Code, {
 const editor2 = monaco.editor.create(player2Code, {
   language: "csharp",
   theme: "vs-dark",
-  fontSize: 15,
+  fontSize: 10,
   readOnly: true,
   automaticLayout: true,
   "editor.scrollBeyondLastLine": false,

@@ -27,19 +27,19 @@ body {
 }
 
 .player-result-error {
-  font-size: 30px;
+  font-size: 15px;
   color: rgb(150, 8, 8); 
   margin-bottom: 20px;
 }
 
 .player-result-success {
-  font-size: 30px;
+  font-size: 15px;
   color: rgb(7, 147, 87); 
   margin-bottom: 20px;
 }
 
 .player-result-test-failed {
-  font-size: 30px;
+  font-size: 15px;
   color: rgb(147, 135, 7);
   margin-bottom: 20px;
 }

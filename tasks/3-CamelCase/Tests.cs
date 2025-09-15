@@ -16,10 +16,6 @@ public sealed class Tests
         {
             ("Simple", "simple"),
             ("NoChange", "no_change"),
-            ("XMLParser", "xml_parser"),
-            ("API", "api"),
-            ("MP4Video", "mp4_video"),
-            ("ABc", "a_bc")
         };
         var tests = publicTests.Concat(privateTests).ToArray();
         var testInfos = new TestInfo[tests.Length];

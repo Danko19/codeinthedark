@@ -31,7 +31,7 @@ public sealed class Tests
             try
             {
                 var actual = Solution.Solve(input);
-                if (Math.Abs(actual - expected) > 1e3)
+                if (actual != expected)
                 {
                     testInfos[i] = new TestInfo(false);
                     failed = true;
