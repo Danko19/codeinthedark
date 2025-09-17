@@ -5,39 +5,75 @@ export default function simplifyCSharpCode(code) {
   result = removeMeta(result);
   result = beautify.js(result, {
     indent_size: 2,
+    indent_char: " "
   });
+  result = formatNormalize(result);
   return result;
 }
 
 function removeMeta(code) {
-  const hasSingleClass = code.match(/^\s*class\s/gm).length !== 1;
+  const classMatches = code.match(/^\s*(?:(?:public|private|protected|internal|static|abstract|sealed|partial)\s+)*class\s+[^\{]+/gm);
+  const hasSingleClass = classMatches && classMatches.length === 1;
 
-  // Returns the full code if it contains 0 or >= 1 class
-  if (hasSingleClass) {
+  if (!hasSingleClass) {
     return code;
   }
 
-  let processedCode = code;
+  let processedCode = code.replace(/^\s*using\s+[^;]+;/gm, "").trim();
 
-  processedCode = processedCode.replace(/^\s*using\s+[^;]+;/gm, "").trim();
-
-  let firstBraceIndex = processedCode.indexOf("{");
-  let lastBraceIndex = processedCode.lastIndexOf("}");
-
-  if (firstBraceIndex !== -1 && lastBraceIndex > firstBraceIndex) {
-    processedCode = processedCode
-      .substring(firstBraceIndex + 1, lastBraceIndex)
-      .trim();
+  let classStartIndex = processedCode.indexOf("class");
+  if (classStartIndex === -1) {
+    return processedCode;
+  }
+  let firstBraceIndex = processedCode.indexOf("{", classStartIndex);
+  if (firstBraceIndex === -1) {
+    return processedCode;
   }
 
-  firstBraceIndex = processedCode.indexOf("{");
-  lastBraceIndex = processedCode.lastIndexOf("}");
+  let braceCount = 1;
+  let lastBraceIndex = -1;
+  for (let i = firstBraceIndex + 1; i < processedCode.length; i++) {
+    if (processedCode[i] === "{") {
+      braceCount++;
+    } else if (processedCode[i] === "}") {
+      braceCount--;
+    }
+    if (braceCount === 0) {
+      lastBraceIndex = i;
+      break;
+    }
+  }
 
-  if (firstBraceIndex !== -1 && lastBraceIndex > firstBraceIndex) {
-    processedCode = processedCode
-      .substring(firstBraceIndex + 1, lastBraceIndex)
-      .trim();
+  if (lastBraceIndex !== -1) {
+    processedCode = processedCode.substring(firstBraceIndex + 1, lastBraceIndex).trim();
+  }
+
+  let namespaceStartIndex = processedCode.indexOf("namespace");
+  if (namespaceStartIndex !== -1) {
+    firstBraceIndex = processedCode.indexOf("{", namespaceStartIndex);
+    if (firstBraceIndex !== -1) {
+      braceCount = 1;
+      lastBraceIndex = -1;
+      for (let i = firstBraceIndex + 1; i < processedCode.length; i++) {
+        if (processedCode[i] === "{") {
+          braceCount++;
+        } else if (processedCode[i] === "}") {
+          braceCount--;
+        }
+        if (braceCount === 0) {
+          lastBraceIndex = i;
+          break;
+        }
+      }
+      if (lastBraceIndex !== -1) {
+        processedCode = processedCode.substring(firstBraceIndex + 1, lastBraceIndex).trim();
+      }
+    }
   }
 
   return processedCode;
+}
+
+function formatNormalize(code) {
+  return code.replace(/\$ "/g, '$"');
 }
