@@ -17,6 +17,7 @@
     "concurrently": "^9.2.0"
   },
   "dependencies": {
+    "js-beautify": "^1.15.4",
     "jszip": "^3.10.1"
   }
 }
