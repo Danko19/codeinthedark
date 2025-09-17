@@ -1,6 +1,7 @@
 import { formatTime } from "../utils/formatTime";
 import * as monaco from "monaco-editor";
 import { emmetHTML } from "emmet-monaco-es";
+import simplifyCSharpCode from "../utils/simplifyCSharpCode";
 emmetHTML(monaco);
 
 function updatePlayerResult(result, element) {
@@ -28,25 +29,20 @@ const player2Result = document.getElementById("result-player-2");
 let currentTaskId = null;
 let lastCodes = { 1: "", 2: "" };
 
-const editor1 = monaco.editor.create(player1Code, {
+const editorOptions = {
   language: "csharp",
   theme: "vs-dark",
-  fontSize: 10,
+  fontSize: 15,
+  tabSize: 2,
+  insertSpaces: true,
   automaticLayout: true,
-  readOnly: true,
   "editor.scrollBeyondLastLine": false,
-  minimap: { enabled: false }
-});
+  minimap: { enabled: false },
+  readOnly: true,
+};
 
-const editor2 = monaco.editor.create(player2Code, {
-  language: "csharp",
-  theme: "vs-dark",
-  fontSize: 10,
-  readOnly: true,
-  automaticLayout: true,
-  "editor.scrollBeyondLastLine": false,
-  minimap: { enabled: false }
-});
+const editor1 = monaco.editor.create(player1Code, editorOptions);
+const editor2 = monaco.editor.create(player2Code, editorOptions);
 
 function poll() {
   fetch("/api/state")
@@ -73,11 +69,11 @@ function poll() {
       }
       if (state.codes[1] !== lastCodes[1]) {
         lastCodes[1] = state.codes[1];
-        editor1.setValue(lastCodes[1]);
+        editor1.setValue(simplifyCSharpCode(lastCodes[1]));
       }
       if (state.codes[2] !== lastCodes[2]) {
         lastCodes[2] = state.codes[2];
-        editor2.setValue(lastCodes[2]);
+        editor2.setValue(simplifyCSharpCode(lastCodes[2]));
       }
 
       updatePlayerResult(state.codeCheckerResults[1], player1Result);

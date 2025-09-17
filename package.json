@@ -11,12 +11,16 @@
   },
   "scripts": {
     "start": "npm run build --workspace=client && npm run start --workspace=server",
-    "dev": "NODE_ENV=development concurrently 'npm run start --workspace=server' 'npm run start --workspace=client'"
+    "dev": "NODE_ENV=development concurrently 'npm run start --workspace=server' 'npm run start --workspace=client'",
+    "test": "vitest"
   },
   "devDependencies": {
-    "concurrently": "^9.2.0"
+    "concurrently": "^9.2.0",
+    "vite": "^7.1.5",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
+    "js-beautify": "^1.15.4",
     "jszip": "^3.10.1"
   }
 }
