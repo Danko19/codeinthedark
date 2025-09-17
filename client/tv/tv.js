@@ -54,8 +54,8 @@ function poll() {
     .then((state) => {
       const img = document.getElementById("refImg");
       if (!currentTaskId) {
-        img.src = "preview.png";
-        img.style.objectFit = "fill";
+        img.src = "preview.svg";
+        img.style.objectFit = "cover";
       }
 
       if (state.taskId !== currentTaskId) {
