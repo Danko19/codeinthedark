@@ -1,0 +1,12 @@
+namespace Task10;
+
+// Пожалуйста, не меняй название класса
+public static class Solution
+{
+    // Пожалуйста, не меняй сигнатуру метода Solve
+    public static bool Solve(string input)
+    {
+        // Место для решения
+
+    }
+}

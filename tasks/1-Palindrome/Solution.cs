@@ -7,7 +7,7 @@ public static class Solution
     public static bool Solve(string input)
     {
         var normalized = new StringBuilder();
-        foreach (var c in input.Where(char.IsLetter))
+        foreach (var c in input.Where(char.IsLetterOrDigit))
         {
             normalized.Append(char.ToLowerInvariant(c));
         }

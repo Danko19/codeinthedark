@@ -1,10 +1,10 @@
-namespace Task7;
+namespace Task9;
 
 // Пожалуйста, не меняй название класса
 public static class Solution
 {
     // Пожалуйста, не меняй сигнатуру метода Solve
-    public static int Solve(int x, int y)
+    public static int[] Solve(int[] input)
     {
         // Место для решения
 
